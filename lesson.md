@@ -347,7 +347,7 @@ Work through the normalization steps with your group:
 
 **Final Result — 4 clean tables:** Customers, Products, Orders, Order Line Items.
 
-#### >> see group thought process of the normalized database
+❗️see group thought process of the normalized database >>
 [Book1.xlsx](https://github.com/user-attachments/files/26573855/Book1.xlsx)
 
 <details>
