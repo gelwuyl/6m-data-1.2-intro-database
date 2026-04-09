@@ -85,6 +85,75 @@ Task:
 
 Paste the generated code for your Users table below. Try to read it, then open the answers below.
 
+❗️see DBML code done up
+<details>
+  
+```
+Table users {
+  id int [pk, increment]
+  name varchar [not null]
+  email varchar [not null, unique]
+  created_at timestamp
+}
+
+Table user_addresses {
+  id int [pk, increment]
+  user_id int [not null, ref: > users.id]
+  label varchar [not null] // e.g., Home, Work
+  street varchar [not null]
+  unit varchar [not null]
+  postal_code varchar [not null]
+}
+
+Table restaurants {
+  id int [pk, increment]
+  name varchar [not null]
+  cuisine_type varchar [not null]
+  rating decimal(2,1) // e.g., 4.5
+}
+
+Table menu_items {
+  id int [pk, increment]
+  restaurant_id int [not null, ref: > restaurants.id]
+  name varchar [not null]
+  unit_price decimal(10,2) [not null]
+}
+
+Table couriers {
+  id int [pk, increment]
+  name varchar [not null]
+  vehicle_type varchar [not null] // e.g., Bike, Car
+}
+
+Table orders {
+  id int [pk, increment]
+  user_id int [not null, ref: > users.id]
+  courier_id int [not null, ref: > couriers.id]
+  restaurant_id int [not null, ref: > restaurants.id]
+  delivery_address_id int [ref: > user_addresses.id]
+  ordered_at timestamp
+  status varchar
+}
+
+Table order_items {
+  id int [pk, increment]
+  order_id int [not null, ref: > orders.id]
+  menu_item_id int [not null, ref: > menu_items.id]
+  unit_price_at_purchase decimal [not null]  // snapshot of menu_items.price at order time. Do not use 'ref: > menu_items.price' because price is mutable and non-unique. Keep menu_items_id as FK and copy unit_price into unit_price_at_purchase upon insert time via app logic/DB trigger.
+  quantity int [not null, default: 1]
+
+  indexes {
+    (order_id, menu_items_id) [unique]
+  }
+}
+```
+// for the snapshot of menu_items.price at order time. Do not use 'ref: > menu_items.price' because price is mutable and non-unique. Keep menu_items_id as FK and copy unit_price into unit_price_at_purchase upon insert time via app logic/DB trigger.
+
+<img width="1162" height="788" alt="Screenshot 2026-04-09 at 9 38 05 PM" src="https://github.com/user-attachments/assets/d275d1da-417c-4325-8974-f90d01529264" />
+
+</details>
+
+
 * What does NOT NULL mean?
 
 <details>
